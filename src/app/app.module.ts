@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HomeComponent } from './home/home.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { DatailProductComponent } from './datail-product/datail-product.component';
-import { OrderComponent } from './order/order.component';
-import { OrderConfirmComponent } from './order-confirm/order-confirm.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { HomeComponent } from './components/home/home.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
+import { DatailProductComponent } from './components/datail-product/datail-product.component';
+import { OrderComponent } from './components/order/order.component';
+import { OrderConfirmComponent } from './components/order-confirm/order-confirm.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {
+   HttpClientModule, 
+   HTTP_INTERCEPTORS 
+  } from '@angular/common/http';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 @NgModule({
   declarations: [
@@ -27,14 +31,20 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [
     //HomeComponent
     // DatailProductComponent
     // OrderComponent
     // OrderConfirmComponent
-    // LoginComponent
-    RegisterComponent
+    LoginComponent
+    // RegisterComponent
   ]
 })
 export class AppModule { }
