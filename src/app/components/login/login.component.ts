@@ -18,8 +18,8 @@ import { Role } from 'src/app/models/role';
 export class LoginComponent {
   @ViewChild('loginForm') loginForm!: NgForm;
 
-  phoneNumber: string = '33445566';
-  password: string = '123456';
+  phoneNumber: string = '';
+  password: string = '';
 
   roles: Role[] = []; // Mảng roles
   rememberMe: boolean = true;
