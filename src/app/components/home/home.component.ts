@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from 'src/app/environments/environment';
 import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
+import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
 
 @Component({
@@ -9,7 +11,7 @@ import { ProductService } from 'src/app/services/product.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = []; // Dữ liệu động từ categoryService
   selectedCategoryId: number  = 0; // Giá trị category được chọn
@@ -19,9 +21,12 @@ export class HomeComponent {
   totalPages:number = 0;
   visiblePages: number[] = [];
   keyword:string = "";
-  categoryService: any;
 
-  constructor(private productSerivce: ProductService) { }
+  constructor(
+    private productService: ProductService,
+    private categoryService: CategoryService,    
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
@@ -49,7 +54,7 @@ export class HomeComponent {
   }
   getProducts(keyword: string, selectedCategoryId: number, page: number, limit: number) {
     debugger
-    this.productSerivce.getProducts(keyword, selectedCategoryId, page, limit).subscribe({
+    this.productService.getProducts(keyword, selectedCategoryId, page, limit).subscribe({
       next: (response: any) => {
         debugger
         response.products.forEach((product: Product) => {          
@@ -68,7 +73,6 @@ export class HomeComponent {
       }
     });    
   }
-
   onPageChange(page: number) {
     debugger;
     this.currentPage = page;
