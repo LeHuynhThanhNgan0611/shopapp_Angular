@@ -9,7 +9,7 @@
         <p>Trang hiển thị danh sách các sản phẩm kèm ảnh</p>
         <p>Các bạn có thể xem sản phẩm và mua hàng tại đây</p>
     </div>
-    <!--Đoạn này có 1 ô searchbox bên trái, 1 combobox bên phải-->
+    <!--Đoạn này có 1 ô searchbox bên trái, 1 combobox bên phải  -->
     <div class="search-box">
         <input type="text" class="form-control search-input" 
             placeholder="Tìm sản phẩm" 
@@ -22,14 +22,14 @@
             </option>
         </select>
         <button class="btn btn-primary ml-2" (click)="searchProducts()">Tìm kiếm</button>
-    </div>
+    </div>        
     <div class="row">
         <div class="col-lg-4 col-md-6" *ngFor="let product of products">
-            <div class="product-item">
+            <div class="product-item" (click)="(product.id)">
                 <img [src]="product.url" alt="Product Image" class="product-image">
                 <h3 class="product-name">{{ product.name }}</h3>
                 <p class="product-description">{{ product.description }}</p>
-                <p class="product-price">Giá: ${{ product.price }}</p>                
+                <p class="product-price">Giá: {{ product.price | currency:'VND':'symbol':'1.0-0' | slice: 1}}₫</p>                
             </div>
         </div>
     </div>
