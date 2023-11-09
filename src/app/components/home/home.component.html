@@ -1,13 +1,10 @@
-<style>
-</style>
 
 <app-header></app-header>
-
 <div class="container">
     <div class="intro-section">
         <h1>Đây là trang Home</h1>
-        <p>Trang hiển thị danh sách các sản phẩm kèm ảnh</p>
-        <p>Các bạn có thể xem sản phẩm và mua hàng tại đây</p>
+        <p>Trang này hiển thị danh sách các sản phẩm, kèm ảnh</p>
+        <p>Các bạn có thể chọn xem sản phẩm và mua hàng tại đây</p>
     </div>
     <!--Đoạn này có 1 ô searchbox bên trái, 1 combobox bên phải  -->
     <div class="search-box">
@@ -25,11 +22,11 @@
     </div>        
     <div class="row">
         <div class="col-lg-4 col-md-6" *ngFor="let product of products">
-            <div class="product-item" (click)="(product.id)">
+            <div class="product-item" (click)="onProductClick(product.id)">
                 <img [src]="product.url" alt="Product Image" class="product-image">
                 <h3 class="product-name">{{ product.name }}</h3>
                 <p class="product-description">{{ product.description }}</p>
-                <p class="product-price">Giá: {{ product.price | currency:'VND':'symbol':'1.0-0' | slice: 1}}₫</p>                
+                <p class="product-price">Giá: {{ product.price | currency:'VND':'symbol':'1.0-0' | slice: 1 }}₫</p>                
             </div>
         </div>
     </div>
@@ -58,5 +55,5 @@
         </ul>
     </nav>
 </div>
-
+      
 <app-footer></app-footer>
