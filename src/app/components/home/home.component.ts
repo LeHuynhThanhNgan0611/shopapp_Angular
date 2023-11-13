@@ -5,7 +5,7 @@ import { Category } from 'src/app/models/category';
 import { Product } from 'src/app/models/product';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
-import { TokenService } from 'src/app/services/token.serivice';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-home',
