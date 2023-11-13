@@ -16,6 +16,7 @@ import {
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { AppComponent } from './app/app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
   ],
   providers: [
     {

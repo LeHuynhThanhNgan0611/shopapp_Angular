@@ -5,7 +5,7 @@
             <div class="login-form mx-auto">
                 <h2 class="login-header">Đăng nhập</h2>
                 <div class="form-group">
-                    <label for="phoneNumber">Phone</label>
+                    <label for="phoneNumber">Số điện thoại</label>
                     <input type="text" class="form-control" [(ngModel)]="phoneNumber" (input)="onPhoneNumberChange()"
                         name="phone" (focus)="loginForm.form.markAsTouched()" id="phoneNumber">
                     <div class="divider-nospace"></div>
@@ -41,7 +41,7 @@
                 <button type="button" (click)="login()" class="login-button">Đăng nhập</button>
                 <div class="divider"></div>
                 <p class="text-center">Bạn chưa đăng ký? <span>
-                        <a href="#" class="register-link">Tạo tài khoản</a></span></p>
+                        <a class="register-link" (click)="createAccount()">Tạo tài khoản</a></span></p>
             </div>
         </div>
     </div>

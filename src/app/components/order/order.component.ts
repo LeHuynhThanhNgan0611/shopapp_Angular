@@ -8,14 +8,14 @@ import { OrderDTO } from '../../dtos/order/order.dto';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Order } from 'src/app/models/order';
-import { TokenService } from 'src/app/services/token.serivice';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.scss']
 })
-export class OrderComponent implements OnInit{
+export class OrderComponent implements OnInit {
   orderForm: FormGroup; // Đối tượng FormGroup để quản lý dữ liệu của form
   cartItems: { product: Product, quantity: number }[] = [];
   couponCode: string = ''; // Mã giảm giá
@@ -54,22 +54,23 @@ export class OrderComponent implements OnInit{
       payment_method: ['cod']
     });
   }
-  
-  ngOnInit(): void {  
+
+  ngOnInit(): void {
     debugger
-    if (!this.tokenService.getUserInfoFromToken() || 
-          this.tokenService.isTokenExpired()) {
-      this.router.navigate(['/']);
-    }     
+    // this.cartService.clearCart();
+    this.orderData.user_id = this.tokenService.getUserId();
     // Lấy danh sách sản phẩm từ giỏ hàng
     debugger
     const cart = this.cartService.getCart();
     const productIds = Array.from(cart.keys()); // Chuyển danh sách ID từ Map giỏ hàng    
 
     // Gọi service để lấy thông tin sản phẩm dựa trên danh sách ID
-    debugger    
+    debugger
+    if (productIds.length === 0) {
+      return;
+    }
     this.productService.getProductsByIds(productIds).subscribe({
-      next: (products) => {            
+      next: (products) => {
         debugger
         // Lấy thông tin sản phẩm và số lượng từ danh sách sản phẩm và giỏ hàng
         this.cartItems = productIds.map((productId) => {
@@ -77,7 +78,7 @@ export class OrderComponent implements OnInit{
           const product = products.find((p) => p.id === productId);
           if (product) {
             product.thumbnail = `${environment.apiBaseUrl}/products/images/${product.thumbnail}`;
-          }          
+          }
           return {
             product: product!,
             quantity: cart.get(productId)!
@@ -93,7 +94,7 @@ export class OrderComponent implements OnInit{
         debugger;
         console.error('Error fetching detail:', error);
       }
-    });        
+    });
   }
   placeOrder() {
     debugger
@@ -117,12 +118,14 @@ export class OrderComponent implements OnInit{
         product_id: cartItem.product.id,
         quantity: cartItem.quantity
       }));
+      this.orderData.total_money = this.totalAmount;
       // Dữ liệu hợp lệ, bạn có thể gửi đơn hàng đi
       this.orderService.placeOrder(this.orderData).subscribe({
-        next: (response:Order) => {
-          debugger;          
-          console.log('Đặt hàng thành công');
-          this.router.navigate(['/orders/', response.id]);
+        next: (response: Order) => {
+          debugger;
+          alert('Đặt hàng thành công');
+          this.cartService.clearCart();
+          this.router.navigate(['/']);
         },
         complete: () => {
           debugger;
@@ -130,28 +133,28 @@ export class OrderComponent implements OnInit{
         },
         error: (error: any) => {
           debugger;
-          console.error('Lỗi khi đặt hàng:', error);
+          alert(`Lỗi khi đặt hàng: ${error}`);
         },
       });
     } else {
       // Hiển thị thông báo lỗi hoặc xử lý khác
       alert('Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.');
-    }        
+    }
   }
-    
-    
-  
+
+
+
   // Hàm tính tổng tiền
   calculateTotal(): void {
-      this.totalAmount = this.cartItems.reduce(
-          (total, item) => total + item.product.price * item.quantity,
-          0
-      );
+    this.totalAmount = this.cartItems.reduce(
+      (total, item) => total + item.product.price * item.quantity,
+      0
+    );
   }
 
   // Hàm xử lý việc áp dụng mã giảm giá
   applyCoupon(): void {
-      // Viết mã xử lý áp dụng mã giảm giá ở đây
-      // Cập nhật giá trị totalAmount dựa trên mã giảm giá nếu áp dụng
+    // Viết mã xử lý áp dụng mã giảm giá ở đây
+    // Cập nhật giá trị totalAmount dựa trên mã giảm giá nếu áp dụng
   }
 }
