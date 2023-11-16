@@ -15,11 +15,12 @@ export class RegisterComponent {
   password: string;
   retypePassword: string;
   fullName: string;
-  address: string;
+  address:string;
   isAccepted: boolean;
   dateOfBirth: Date;
 
-  constructor(private router: Router, private userService: UserService) {
+  constructor(private router: Router, private userService: UserService){
+    debugger
     this.phoneNumber = '';
     this.password = '';
     this.retypePassword = '';
@@ -31,50 +32,50 @@ export class RegisterComponent {
     //inject
 
   }
-  onPhoneNumberChange() {
+  onPhoneNumberChange(){
     console.log(`Phone typed: ${this.phoneNumber}`)
     //how to validate ? phone must be at least 6 characters
   }
   register() {
-    const message = `phone: ${this.phoneNumber}` +
-      `password: ${this.password}` +
-      `retypePassword: ${this.retypePassword}` +
-      `address: ${this.address}` +
-      `fullName: ${this.fullName}` +
-      `isAccepted: ${this.isAccepted}` +
-      `dateOfBirth: ${this.dateOfBirth}`;
+    const message = `phone: ${this.phoneNumber}`+
+                    `password: ${this.password}`+
+                    `retypePassword: ${this.retypePassword}`+
+                    `address: ${this.address}`+
+                    `fullName: ${this.fullName}`+
+                    `isAccepted: ${this.isAccepted}`+
+                    `dateOfBirth: ${this.dateOfBirth}`;
     //alert(message);
     debugger
-
-    const registerDTO: RegisterDTO = {
-      "fullname": this.fullName,
-      "phone_number": this.phoneNumber,
-      "address": this.address,
-      "password": this.password,
-      "retype_password": this.retypePassword,
-      "date_of_birth": this.dateOfBirth,
-      "facebook_account_id": 0,
-      "google_account_id": 0,
-      "role_id": 1
+    
+    const registerDTO:RegisterDTO = {
+        "fullname": this.fullName,
+        "phone_number": this.phoneNumber,
+        "address": this.address,
+        "password": this.password,
+        "retype_password": this.retypePassword,
+        "date_of_birth": this.dateOfBirth,
+        "facebook_account_id": 0,
+        "google_account_id": 0,
+        "role_id": 1
     }
     this.userService.register(registerDTO).subscribe({
-      next: (response: any) => {
-        debugger
-        this.router.navigate(['/login']);
-      },
-      complete: () => {
-        debugger
-      },
-      error: (error: any) => {
-        alert(`Cannot register, error: ${error.error}`)
-      }
-    })
+        next: (response: any) => {
+          debugger
+          this.router.navigate(['/login']);          
+        },
+        complete: () => {
+          debugger
+        },
+        error: (error: any) => {          
+          alert(`Cannot register, error: ${error.error}`)          
+        }
+    })   
   }
   //how to check password match ?
-  checkPasswordsMatch() {
+  checkPasswordsMatch() {    
     if (this.password !== this.retypePassword) {
       this.registerForm.form.controls['retypePassword']
-        .setErrors({ 'passwordMismatch': true });
+            .setErrors({ 'passwordMismatch': true });
     } else {
       this.registerForm.form.controls['retypePassword'].setErrors(null);
     }

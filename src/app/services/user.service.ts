@@ -6,6 +6,7 @@ import { LoginDTO } from "../dtos/user/login.dto";
 import { environment } from "../environments/environment";
 import { HttpUtilService } from "./http.util.service";
 import { UserResponse } from "../responses/user/user.response";
+import { UpdateUserDTO } from "../dtos/user/update.user.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,16 @@ export class UserService {
       })
     })
   }
+  updateUserDetail(token: string, updateUserDTO: UpdateUserDTO) {
+    debugger
+    let userResponse = this.getUserResponseFromLocalStorage();
+    return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`, updateUserDTO, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      })
+    })
+  }
   saveUserResponseToLocalStorage(userResponse?: UserResponse) {
     try {
       debugger
@@ -54,7 +65,7 @@ export class UserService {
       console.error('Error saving user response to local storage:', error);
     }
   }
-  getUserResponseFromLocalStorage() {
+  getUserResponseFromLocalStorage(): UserResponse | null {
     try {
       // Retrieve the JSON string from local storage using the key
       const userResponseJSON = localStorage.getItem('user');
