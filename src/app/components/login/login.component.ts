@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
  // Import RoleService
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -16,11 +16,16 @@ import { UserResponse } from 'src/app/responses/user/user.response';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   @ViewChild('loginForm') loginForm!: NgForm;
 
+  /*
+  //Login user
   phoneNumber: string = '33445566';
-  password: string = '123456';
+  password: string = '123456789';
+  */
+  phoneNumber: string = '11223344';
+  password: string = '11223344';
 
   roles: Role[] = []; // Mảng roles
   rememberMe: boolean = true;
@@ -88,7 +93,12 @@ export class LoginComponent {
                 date_of_birth: new Date(response.date_of_birth),
               };    
               this.userService.saveUserResponseToLocalStorage(this.userResponse); 
-              this.router.navigate(['/']);                      
+              if(this.userResponse?.role.name == 'Admin') {
+                this.router.navigate(['/admin']);    
+              } else if(this.userResponse?.role.name == 'User') {
+                this.router.navigate(['/']);                      
+              }
+              
             },
             complete: () => {
               debugger;
